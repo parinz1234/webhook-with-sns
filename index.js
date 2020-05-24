@@ -15,4 +15,43 @@ app.use(express.json());
 
 app.get('/status', (req, res) => res.json({ status: "ok", sns: sns }));
 
+app.post('/subscribe', async (req, res) => {
+	try {
+		const params = {
+			Protocol: 'https',
+			TopicArn: process.env.AWS_TOPIC_ARN,
+			Endpoint: req.body.url,
+			ReturnSubscriptionArn: true
+		};
+		const response = await sns.subscribe(params).promise();
+
+		/* Call setSubscriptionAttributes to enable raw messsage delivery so subscriber will received only message data*/
+		const { SubscriptionArn } = response;
+		const enableRawMessageParams = {
+			AttributeName: 'RawMessageDelivery',
+			SubscriptionArn: SubscriptionArn,
+			AttributeValue: 'true'
+		};
+		await sns.setSubscriptionAttributes(enableRawMessageParams).promise();
+
+		res.status(200).json(response);
+	} catch (err) {
+		console.log(err);
+		res.status(400).json(err);
+	}
+});
+
+app.post('/publish', async (req, res) => {
+	try {
+		const params = {
+			Message: JSON.stringify(req.body),
+			TopicArn: process.env.AWS_TOPIC_ARN,
+		}
+		const response = await sns.publish(params).promise();
+		res.status(200).json(response);
+	} catch (err) {
+		res.status(400).json(err);
+	}
+});
+
 app.listen(port, () => console.log(`SNS App listening on port ${port}!`));
