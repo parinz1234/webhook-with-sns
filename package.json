@@ -1,0 +1,13 @@
+{
+  "name": "webhook-with-sns",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/parinz1234/webhook-with-sns.git",
+  "author": "Parinya Onsuwan <parinya.ons@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "aws-sdk": "^2.683.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1"
+  }
+}
