@@ -9,7 +9,7 @@ const sns = new AWS.SNS({
 	region: process.env.AWS_REGION
 });
 
-const port = 3000;
+const port = process.env.PORT;
 
 app.use(express.json());
 
@@ -43,8 +43,9 @@ app.post('/subscribe', async (req, res) => {
 
 app.post('/publish', async (req, res) => {
 	try {
+		const message = JSON.parse(req.body.message);
 		const params = {
-			Message: JSON.stringify(req.body),
+			Message: JSON.stringify(message),
 			TopicArn: process.env.AWS_TOPIC_ARN,
 		}
 		const response = await sns.publish(params).promise();
