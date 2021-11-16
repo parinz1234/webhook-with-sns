@@ -6,7 +6,7 @@
   "author": "Parinya Onsuwan <parinya.ons@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "aws-sdk": "^2.683.0",
+    "aws-sdk": "^2.814.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1"
   },
